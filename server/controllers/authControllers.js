@@ -9,6 +9,21 @@ const handleError = (err) => {
   };
 };
 
+const getLogin = (req, res) => {
+  console.log("login session", req.session.user);
+  if (req.session.user) {
+    res.send({
+      isLoggedIn: true,
+      user: req.session.user,
+    });
+  } else {
+    res.send({
+      isLoggedIn: false,
+      user: null,
+    });
+  }
+};
+
 const postLogin = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -21,6 +36,10 @@ const postLogin = async (req, res) => {
       // true if entered password and password from db (hashed) matched ,else false
       const result = await bcrypt.compare(password, user.password);
       if (result) {
+        // creating a session
+        req.session.user = user;
+        console.log("session", req.session.user);
+
         res.status(200).json({
           status: "success login",
           data: user,
@@ -60,4 +79,5 @@ const postSignup = async (req, res) => {
 module.exports = {
   postLogin,
   postSignup,
+  getLogin,
 };

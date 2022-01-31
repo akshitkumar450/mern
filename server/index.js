@@ -1,9 +1,30 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
 const cors = require("cors");
-app.use(cors());
+
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+    methods: ["GET", "POST"],
+    credentials: true,
+  })
+);
+app.use(cookieParser());
+// for cookie
+app.use(
+  session({
+    key: "user",
+    secret: "super-secret",
+    saveUninitialized: true,
+    resave: true,
+    cookie: {
+      expires: 60 * 60 * 24, // 24 hours
+    },
+  })
+);
 
 const dotenv = require("dotenv");
 // path to env file
