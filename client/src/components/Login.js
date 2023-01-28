@@ -29,7 +29,7 @@ function Login({ setIsLoggedIn }) {
         password,
       });
       console.log(data?.data);
-      history.push("/");
+      // history.push("/");
     } catch (err) {
       // console.log(err.response.data.message);
       alert(err.response.data.message);
